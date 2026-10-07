@@ -1,0 +1,22 @@
+{
+  "artists": [
+    {
+      "name": "SoundHelix",
+      "bio": "Algorithmically generated demo music from soundhelix.com, used here only as test data."
+    }
+  ],
+  "albums": [
+    {
+      "title": "Algorithmic Grooves",
+      "artist": "SoundHelix",
+      "releaseYear": 2020,
+      "description": "Demo tracks for testing MusicStream."
+    }
+  ],
+  "songs": [
+    { "title": "Helix Song 1", "artist": "SoundHelix", "album": "Algorithmic Grooves", "genre": "Electronic", "trackNumber": 1, "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+    { "title": "Helix Song 2", "artist": "SoundHelix", "album": "Algorithmic Grooves", "genre": "Electronic", "trackNumber": 2, "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+    { "title": "Helix Song 3", "artist": "SoundHelix", "album": "Algorithmic Grooves", "genre": "Instrumental", "trackNumber": 3, "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+    { "title": "Helix Song 4", "artist": "SoundHelix", "album": "Algorithmic Grooves", "genre": "Instrumental", "trackNumber": 4, "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+  ]
+}

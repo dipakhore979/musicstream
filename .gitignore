@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.DS_Store
+
+# Seed media you downloaded yourself (keep licences/credits in tracks.json, not the files, in git)
+server/seed/tracks.json
+server/seed/audio/
+server/seed/images/

@@ -1,0 +1,35 @@
+# Render Blueprint: Dashboard > New > Blueprint > pick this repo.
+# Values marked `sync: false` are asked for during setup and never stored in git.
+services:
+  - type: web
+    name: musicstream-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true # Render creates a long random secret for you
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # Your Vercel URL, e.g. https://musicstream.vercel.app (comma-separate more origins if needed)
+      - key: CLIENT_URL
+        sync: false
+      # Vercel forwards /api to Render, so there are 2 proxies between the visitor and this app.
+      - key: TRUST_PROXY_HOPS
+        value: "2"
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

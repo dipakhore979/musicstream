@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+
+body {
+  @apply bg-black font-serif text-white antialiased;
+}
+
+/* Spotify-style slim scrollbars */
+* { scrollbar-width: thin; scrollbar-color: #535353 transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: #535353; border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+@layer components {
+  .skeleton { @apply animate-pulse rounded bg-surface-highlight; }
+
+  .input {
+    @apply w-full rounded-md bg-surface-highlight px-3 py-2.5 text-sm outline-none ring-1 ring-white/20 transition focus:ring-2 focus:ring-white;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-6 py-2.5 font-bold text-black transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold transition hover:border-white disabled:cursor-not-allowed disabled:opacity-60;
+  }
+}
+
+/* ---- Range sliders (seek bar + volume) ---- */
+input[type="range"].range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #fff var(--pct, 0%), #4d4d4d var(--pct, 0%));
+  cursor: pointer;
+  outline: none;
+}
+input[type="range"].range:hover {
+  background: linear-gradient(to right, #1db954 var(--pct, 0%), #4d4d4d var(--pct, 0%));
+}
+input[type="range"].range:disabled { opacity: 0.4; cursor: default; }
+.range::-webkit-slider-runnable-track { background: transparent; height: 4px; }
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; margin-top: -4px;
+  border-radius: 50%; background: #fff; opacity: 0; transition: opacity 0.1s;
+}
+.range:hover::-webkit-slider-thumb, .range:focus-visible::-webkit-slider-thumb { opacity: 1; }
+.range::-moz-range-track { background: transparent; height: 4px; }
+.range::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: #fff; opacity: 0; }
+.range:hover::-moz-range-thumb, .range:focus-visible::-moz-range-thumb { opacity: 1; }
+/* Touch screens have no hover, so keep the thumb visible and a bit larger. */
+@media (pointer: coarse) {
+  input[type="range"].range { height: 6px; }
+  .range::-webkit-slider-thumb { opacity: 1; width: 16px; height: 16px; margin-top: -5px; }
+  .range::-moz-range-thumb { opacity: 1; width: 16px; height: 16px; }
+}
+
+/* ---- "Now playing" equalizer bars in song rows ---- */
+.eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.eq span { width: 3px; height: 3px; background: #1db954; animation: eq 0.9s ease-in-out infinite; }
+.eq span:nth-child(2) { animation-delay: 0.2s; }
+.eq span:nth-child(3) { animation-delay: 0.4s; }
+.eq.paused span { animation-play-state: paused; }
+@keyframes eq { 0%, 100% { height: 3px; } 50% { height: 14px; } }
+
+/* ---- Accessibility ---- */
+:focus-visible { outline: 2px solid #1db954; outline-offset: 2px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: none; } /* these have their own ring */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
