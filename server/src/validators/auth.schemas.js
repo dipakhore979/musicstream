@@ -15,6 +15,11 @@ const newPassword = z
   .regex(/[A-Za-z]/, "Password must contain a letter")
   .regex(/\d/, "Password must contain a number");
 
+const otp = z
+  .string({ required_error: "Enter the 6-digit code" })
+  .trim()
+  .regex(/^\d{6}$/, "Enter the 6-digit code");
+
 export const signupSchema = z.object({
   name: z
     .string({ required_error: "Name is required" })
@@ -30,3 +35,7 @@ export const loginSchema = z.object({
   email,
   password: z.string({ required_error: "Password is required" }).min(1, "Password is required").max(72),
 });
+
+export const verifyEmailSchema = z.object({ email, otp });
+export const emailOnlySchema = z.object({ email });
+export const resetPasswordSchema = z.object({ email, otp, password: newPassword });

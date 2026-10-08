@@ -1,10 +1,11 @@
 // Operational errors carry an HTTP status so the central handler can respond correctly.
 export class ApiError extends Error {
-  constructor(statusCode, message, errors = undefined) {
+  constructor(statusCode, message, errors = undefined, code = undefined) {
     super(message);
     this.name = "ApiError";
     this.statusCode = statusCode;
     this.errors = errors;
+    this.code = code; // lets the client react to specific cases without parsing messages
     this.isOperational = true;
     Error.captureStackTrace?.(this, this.constructor);
   }

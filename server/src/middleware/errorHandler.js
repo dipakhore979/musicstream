@@ -9,11 +9,13 @@ export function errorHandler(err, _req, res, _next) {
   let status = 500;
   let message = "Internal server error";
   let errors;
+  let code;
 
   if (err instanceof ApiError) {
     status = err.statusCode;
     message = err.message;
     errors = err.errors;
+    code = err.code;
   } else if (err instanceof ZodError) {
     status = 400;
     message = "Validation failed";
@@ -44,6 +46,7 @@ export function errorHandler(err, _req, res, _next) {
 
   const body = { success: false, message };
   if (errors) body.errors = errors;
+  if (code) body.code = code;
   // Never leak stack traces in production.
   if (!isProd && status >= 500) body.stack = err.stack;
 

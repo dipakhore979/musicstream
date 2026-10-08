@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";;
+import bcrypt from "bcryptjs";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
       url: { type: String, default: "" },
       publicId: { type: String, default: "" },
     },
+    // The default is TRUE on purpose: accounts created before email verification existed have no
+    // such field, and this default means they keep working. New signups set it to false explicitly.
+    emailVerified: { type: Boolean, default: true },
+    // Sessions issued before this moment are rejected (set when the password is reset).
+    passwordChangedAt: { type: Date },
   },
   {
     timestamps: true,
@@ -31,6 +36,7 @@ const userSchema = new mongoose.Schema(
         delete ret._id;
         delete ret.__v;
         delete ret.password;
+        delete ret.passwordChangedAt;
         return ret;
       },
     },

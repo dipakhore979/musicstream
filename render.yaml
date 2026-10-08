@@ -27,6 +27,13 @@ services:
       # Vercel forwards /api to Render, so there are 2 proxies between the visitor and this app.
       - key: TRUST_PROXY_HOPS
         value: "2"
+      # Email for OTP codes. Render's free plan blocks SMTP, so use an HTTP provider (brevo or resend).
+      - key: EMAIL_PROVIDER
+        value: brevo
+      - key: EMAIL_FROM
+        sync: false # e.g. MusicStream <you@gmail.com>, a sender verified with your provider
+      - key: BREVO_API_KEY
+        sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

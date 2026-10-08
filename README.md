@@ -71,6 +71,9 @@ npm run dev                  # API on :5000, app on http://localhost:5173
 | `JWT_EXPIRES_IN` | no | Session length, e.g. `7d` (default) |
 | `CLIENT_URL` | yes in production | Your frontend origin(s), comma-separated, no trailing slash. Used for CORS and CSRF checks |
 | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | for uploads | From the Cloudinary dashboard |
+| `EMAIL_PROVIDER` | yes in production | `console` (dev: codes print in the server terminal), `brevo`, `resend` or `smtp` |
+| `EMAIL_FROM` | for real email | Sender, e.g. `MusicStream <you@gmail.com>`. Must be a sender/domain verified with your provider |
+| `BREVO_API_KEY` / `RESEND_API_KEY` / `SMTP_*` | per provider | Credentials for the provider you chose |
 | `TRUST_PROXY_HOPS` | production | Proxies in front of the API: `1` (Render only) or `2` (Vercel forwarding to Render) |
 | `PORT`, `NODE_ENV` | no | Default `5000` and `development` |
 
@@ -108,6 +111,34 @@ that already exist.
 [Pixabay Music](https://pixabay.com/music/) and the [Free Music Archive](https://freemusicarchive.org/), but
 **always check the licence of each track** and give credit where required. The example file points at
 SoundHelix's demo MP3s purely as test data; check their terms before using them in a public site.
+
+
+## Email verification and password reset (OTP)
+
+New accounts must confirm their email with a 6-digit code before they can log in, and anyone who forgets
+their password can reset it with a code sent to their inbox.
+
+- Codes expire after **10 minutes**, can be used **once**, and are burned after **5 wrong guesses**.
+- A new code can be requested once a minute and 5 times an hour per account.
+- Codes are stored as a keyed hash (HMAC), never in plain text.
+- "Forgot password" answers identically whether or not the email is registered, so it can't be used to find
+  out who has an account.
+- Resetting a password signs out every existing session and emails a "password changed" notice.
+- Accounts created before this feature are treated as verified, so nobody is locked out.
+
+**Development:** leave `EMAIL_PROVIDER=console`. Emails are printed in the terminal running `npm run dev`;
+copy the code from there. No email account needed.
+
+**Real email** (pick one):
+
+| Provider | Setup |
+| --- | --- |
+| **Brevo** (free: 300 emails/day) | Sign up at brevo.com, add and verify a *sender* (your own email address works, no domain needed), create an API key. Set `EMAIL_PROVIDER=brevo`, `BREVO_API_KEY`, and `EMAIL_FROM` to the verified sender |
+| **Resend** | Verify a domain at resend.com, create an API key. Set `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, `EMAIL_FROM` |
+| **SMTP** (e.g. Gmail) | `npm install nodemailer --prefix server`, then set `EMAIL_PROVIDER=smtp`, `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_USER`, and `SMTP_PASS` (a Gmail *App Password*, which needs 2-step verification) |
+
+**Render's free plan blocks outbound SMTP**, so use Brevo or Resend (HTTP APIs) when deployed there.
+Production refuses to start with `EMAIL_PROVIDER=console`, so codes can never leak into logs by accident.
 
 ## Deploy
 
@@ -207,6 +238,7 @@ cd client && npm run build && npm run preview     # open http://localhost:4173 (
 | --- | --- |
 | `Invalid environment configuration` at startup | A required variable is missing in `server/.env` (the message names it) |
 | `MongoDB connection failed` | Wrong password, database name missing from the URI, or your IP isn't allowed in Atlas Network Access |
+| Verification email never arrives | Check spam; check the server log for `Failed to send…`; confirm `EMAIL_FROM` is a verified sender with your provider |
 | `403 Missing required request header` | A request didn't come from the app. Add `-H "X-Requested-With: XMLHttpRequest"` to curl tests |
 | `403 Request origin is not allowed` | `CLIENT_URL` doesn't include the exact site you're using (check `https`, no trailing slash) |
 | Login works locally but not when deployed | `vercel.json` still has the placeholder API hostname, or `CLIENT_URL` is wrong |

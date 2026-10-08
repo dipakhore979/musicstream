@@ -27,6 +27,11 @@ export const protect = asyncHandler(async (req, _res, next) => {
   const user = await User.findById(payload.sub);
   if (!user) throw ApiError.unauthorized("This account no longer exists");
 
+  // A password reset signs out every session that was created before it.
+  if (user.passwordChangedAt && payload.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)) {
+    throw ApiError.unauthorized("Your password was changed, please log in again");
+  }
+
   req.user = user;
   next();
 });

@@ -15,8 +15,14 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+  // Signup does NOT log you in. It emails a code, and verifying that code does.
   signup: async (payload) => {
     const { data } = await api.post("/auth/signup", payload);
+    return data.data; // { email, requiresVerification }
+  },
+
+  verifyEmail: async (payload) => {
+    const { data } = await api.post("/auth/verify-email", payload);
     set({ user: data.data });
     return data.data;
   },
