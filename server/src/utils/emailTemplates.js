@@ -8,7 +8,7 @@ const escapeHtml = (s) =>
 function layout(innerHtml) {
   return `<div style="background:#000;padding:24px;font-family:Arial,Helvetica,sans-serif">
   <div style="max-width:480px;margin:0 auto;background:#121212;border-radius:12px;padding:32px;color:#fff">
-    <div style="font-size:20px;font-weight:bold;color:#1db954;margin-bottom:24px">MusicStream</div>
+    <div style="font-size:20px;font-weight:bold;margin-bottom:24px"><span style="color:#fff">Music</span><span style="color:#1db954">Stream</span></div>
     ${innerHtml}
     <p style="color:#6a6a6a;font-size:12px;margin:24px 0 0">If you didn't request this, you can safely ignore this email.</p>
   </div>

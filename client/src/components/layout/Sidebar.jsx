@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Disc3, Heart, Music, Podcast, ShieldCheck, SquarePlus, Users } from "lucide-react";
+import { Disc3, Download, Heart, Music, Podcast, ShieldCheck, SquarePlus, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import SearchInput from "../search/SearchInput.jsx";
 import { NAV_ITEMS } from "./navItems.js";
@@ -56,6 +56,9 @@ export default function Sidebar() {
         </button>
         <NavLink to="/liked" className={rowClass}>
           <Heart size={18} /> Liked Songs
+        </NavLink>
+        <NavLink to="/downloads" className={rowClass}>
+          <Download size={18} /> Downloads
         </NavLink>
 
         {playlists.map((p) => (

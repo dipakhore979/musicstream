@@ -6,7 +6,7 @@
      fallback for when the network is down.
    - Hashed build files (/assets/*) never change, so they're cached forever for fast repeat loads.
 */
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = `musicstream-static-${VERSION}`;
 const PAGE_CACHE = `musicstream-pages-${VERSION}`;
 const PRECACHE = ["/offline.html", "/icons/icon-192.png", "/icons/icon-512.png"];

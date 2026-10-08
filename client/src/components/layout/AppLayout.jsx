@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar.jsx";
 import MobileNav from "./MobileNav.jsx";
 import PlayerBar from "./PlayerBar.jsx";
@@ -11,6 +11,8 @@ import NowPlayingSheet from "../player/NowPlayingSheet.jsx";
 import ErrorBoundary from "../ui/ErrorBoundary.jsx";
 import { PageSpinner } from "../ui/Spinner.jsx";
 import { useLibraryStore } from "../../store/libraryStore.js";
+import { useOfflineStore } from "../../store/offlineStore.js";
+import { useAuthStore } from "../../store/authStore.js";
 import { useSearchHistoryStore } from "../../store/searchHistoryStore.js";
 
 // This layout stays mounted while routes change inside <Outlet />, so the player never restarts.
@@ -18,6 +20,20 @@ export default function AppLayout() {
   const load = useLibraryStore((s) => s.load);
   const reset = useLibraryStore((s) => s.reset);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const userId = useAuthStore((s) => s.user?.id);
+  const initOffline = useOfflineStore((s) => s.init);
+
+  // Read this account's downloaded songs from device storage.
+  useEffect(() => {
+    if (userId) initOffline(userId);
+  }, [userId, initOffline]);
+
+  // Opened with no connection? Go straight to the songs that work without one.
+  useEffect(() => {
+    if (!navigator.onLine && window.location.pathname === "/") navigate("/downloads", { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load likes + playlists once per session; clear them on logout (when this layout unmounts).
   useEffect(() => {

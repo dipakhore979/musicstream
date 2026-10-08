@@ -49,7 +49,7 @@ export const createSong = asyncHandler(async (req, res) => {
   const coverFile = req.files?.cover?.[0];
   if (!audioFile) throw ApiError.badRequest("An audio file is required");
 
-  const { title, artist, album, genre, trackNumber } = req.body;
+  const { title, artist, album, genre, trackNumber, downloadable } = req.body;
   await assertRefsExist({ artist, album });
 
   const uploaded = []; // tracked so we can roll back if anything below fails
@@ -69,6 +69,7 @@ export const createSong = asyncHandler(async (req, res) => {
       album: album || null,
       genre,
       trackNumber,
+      ...(downloadable !== undefined && { downloadable }),
       duration: audio.duration,
       audio: { url: audio.url, publicId: audio.publicId },
       ...(coverImage && { coverImage }),
@@ -127,4 +128,24 @@ export const registerPlay = asyncHandler(async (req, res) => {
   const song = await Song.findByIdAndUpdate(req.params.id, { $inc: { playCount: 1 } });
   if (!song) throw ApiError.notFound("Song not found");
   sendSuccess(res, { message: "Play recorded" });
+});
+
+// Returns a link that makes the browser SAVE the file instead of playing it. Cloudinary's
+// `fl_attachment:<name>` flag sets the download header and the file name.
+export const getDownloadLink = asyncHandler(async (req, res) => {
+  const song = await Song.findById(req.params.id).populate({ path: "artist", select: "name" });
+  if (!song) throw ApiError.notFound("Song not found");
+  if (song.downloadable === false) throw ApiError.forbidden("Downloads are turned off for this song");
+
+  const label = `${song.artist?.name ? `${song.artist.name} - ` : ""}${song.title}`;
+  // Cloudinary only accepts letters, numbers, dashes and underscores in this name.
+  const safeName = label.replace(/[^A-Za-z0-9_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100) || "song";
+  const extension = song.audio.url.split("?")[0].split(".").pop() || "mp3";
+
+  sendSuccess(res, {
+    data: {
+      url: song.audio.url.replace("/upload/", `/upload/fl_attachment:${safeName}/`),
+      filename: `${safeName}.${extension}`,
+    },
+  });
 });

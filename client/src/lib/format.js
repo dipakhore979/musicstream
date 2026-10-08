@@ -14,3 +14,10 @@ export function formatTotalDuration(seconds = 0) {
 
 // A song without its own cover falls back to its album's cover.
 export const getSongCover = (song) => song?.coverImage?.url || song?.album?.coverImage?.url || "";
+
+export function formatBytes(bytes = 0) {
+  if (!bytes) return "0 MB";
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  if (bytes < 1024 ** 3) return `${(bytes / 1024 / 1024).toFixed(bytes < 100 * 1024 * 1024 ? 1 : 0)} MB`;
+  return `${(bytes / 1024 ** 3).toFixed(1)} GB`;
+}

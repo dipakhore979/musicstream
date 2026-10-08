@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, Disc3, ListMusic, ListPlus, MoreHorizontal, Plus, StepForward, Trash2, User } from "lucide-react";
+import {
+  ChevronLeft, CircleArrowDown, Disc3, Download, ListMusic, ListPlus, MoreHorizontal, Plus, StepForward, Trash2, User,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "../../lib/api.js";
+import { downloadInApp, removeFromApp, saveToDevice } from "../../lib/offlineActions.js";
 import { usePlayerStore } from "../../store/playerStore.js";
 import { useLibraryStore } from "../../store/libraryStore.js";
+import { useOfflineStore } from "../../store/offlineStore.js";
 
 const item = "menu-item flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10";
+const choice = "menu-item flex w-full items-start gap-3 rounded px-3 py-2 text-left text-sm hover:bg-white/10";
 
 // The "…" menu on every song row. Pass onRemoveFromPlaylist when the row is inside a playlist.
 export default function SongMenu({ song, onRemoveFromPlaylist }) {
   const [open, setOpen] = useState(false);
-  const [view, setView] = useState("main"); // "main" | "playlists"
+  const [view, setView] = useState("main"); // "main" | "playlists" | "download"
   const [openUp, setOpenUp] = useState(false);
   const ref = useRef(null);
 
@@ -20,6 +25,7 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
   const playlists = useLibraryStore((s) => s.playlists);
   const createPlaylist = useLibraryStore((s) => s.createPlaylist);
   const addSongToPlaylist = useLibraryStore((s) => s.addSongToPlaylist);
+  const savedInApp = useOfflineStore((s) => s.ids.has(song.id));
 
   useEffect(() => {
     if (!open) return;
@@ -37,7 +43,7 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
     if (!open) {
       // Flip the menu upwards when there isn't room below the button.
       const rect = ref.current.getBoundingClientRect();
-      setOpenUp(window.innerHeight - rect.bottom < 320);
+      setOpenUp(window.innerHeight - rect.bottom < 340);
       setView("main");
     }
     setOpen((o) => !o);
@@ -76,6 +82,11 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
     await onRemoveFromPlaylist(song);
   }
 
+  const act = (fn) => () => {
+    setOpen(false);
+    fn();
+  };
+
   return (
     <div ref={ref} className="relative">
       <button
@@ -91,11 +102,11 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
       {open && (
         <div
           role="menu"
-          className={`absolute right-0 z-30 w-60 rounded-md bg-surface-highlight p-1 shadow-2xl ${
+          className={`absolute right-0 z-30 w-64 rounded-md bg-surface-highlight p-1 shadow-2xl ${
             openUp ? "bottom-full mb-1" : "top-full mt-1"
           }`}
         >
-          {view === "main" ? (
+          {view === "main" && (
             <>
               <button role="menuitem" className={item} onClick={run(playNext, "Will play next")}>
                 <StepForward size={16} /> Play next
@@ -106,6 +117,12 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
               <button role="menuitem" className={item} onClick={() => setView("playlists")}>
                 <ListMusic size={16} /> Add to playlist
               </button>
+              {song.downloadable !== false && (
+                <button role="menuitem" className={item} onClick={() => setView("download")}>
+                  {savedInApp ? <CircleArrowDown size={16} className="text-brand" /> : <Download size={16} />}
+                  {savedInApp ? "Downloaded" : "Download"}
+                </button>
+              )}
               {onRemoveFromPlaylist && (
                 <button role="menuitem" className={`${item} text-red-400`} onClick={removeFromPlaylist}>
                   <Trash2 size={16} /> Remove from this playlist
@@ -123,7 +140,9 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
                 </Link>
               )}
             </>
-          ) : (
+          )}
+
+          {view === "playlists" && (
             <>
               <button className="flex w-full items-center gap-2 px-2 py-2 text-sm font-semibold text-muted hover:text-white" onClick={() => setView("main")}>
                 <ChevronLeft size={16} /> Add to playlist
@@ -140,6 +159,41 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
                 ))}
                 {playlists.length === 0 && <p className="px-3 py-2 text-xs text-muted">You have no playlists yet.</p>}
               </div>
+            </>
+          )}
+
+          {view === "download" && (
+            <>
+              <button className="flex w-full items-center gap-2 px-2 py-2 text-sm font-semibold text-muted hover:text-white" onClick={() => setView("main")}>
+                <ChevronLeft size={16} /> Download
+              </button>
+
+              {savedInApp ? (
+                <>
+                  <p className="flex items-center gap-2 px-3 py-2 text-sm text-brand">
+                    <CircleArrowDown size={16} /> Downloaded in the app
+                  </p>
+                  <button role="menuitem" className={`${item} text-red-400`} onClick={act(() => removeFromApp([song.id]))}>
+                    <Trash2 size={16} /> Remove app download
+                  </button>
+                </>
+              ) : (
+                <button role="menuitem" className={choice} onClick={act(() => downloadInApp([song]))}>
+                  <CircleArrowDown size={18} className="mt-0.5 shrink-0" />
+                  <span>
+                    Download in app
+                    <span className="block text-xs text-muted">Listen offline inside MusicStream</span>
+                  </span>
+                </button>
+              )}
+
+              <button role="menuitem" className={choice} onClick={act(() => saveToDevice([song]))}>
+                <Download size={18} className="mt-0.5 shrink-0" />
+                <span>
+                  Save to device
+                  <span className="block text-xs text-muted">Audio file in your Downloads folder</span>
+                </span>
+              </button>
             </>
           )}
         </div>

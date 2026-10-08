@@ -6,6 +6,7 @@ import HeroBackdrop from "../components/ui/HeroBackdrop.jsx";
 import CoverImage from "../components/music/CoverImage.jsx";
 import SongList from "../components/music/SongList.jsx";
 import PlayAllButtons from "../components/music/PlayAllButtons.jsx";
+import DownloadAllButton from "../components/music/DownloadAllButton.jsx";
 import { SongListSkeleton } from "../components/music/Skeletons.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { formatTotalDuration } from "../lib/format.js";
@@ -72,7 +73,11 @@ export default function AlbumPage() {
           </div>
         </header>
 
-        {album && <PlayAllButtons songs={album.songs} />}
+        {album && (
+          <PlayAllButtons songs={album.songs}>
+            <DownloadAllButton songs={album.songs} />
+          </PlayAllButtons>
+        )}
         {loading && <SongListSkeleton />}
         {album && count === 0 && (
           <EmptyState title="No songs in this album yet" message="Songs added to this album will appear here." />

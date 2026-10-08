@@ -22,6 +22,7 @@ export default function AdminSongs({ artists, albums }) {
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [allowDownload, setAllowDownload] = useState(true);
 
   const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   // Changing the artist invalidates the chosen album, so reset it.
@@ -52,6 +53,7 @@ export default function AdminSongs({ artists, albums }) {
       if (form.genre) fd.append("genre", form.genre);
       if (form.trackNumber) fd.append("trackNumber", form.trackNumber);
       fd.append("audio", audio);
+      fd.append("downloadable", String(allowDownload));
       if (cover) fd.append("cover", cover);
 
       await api.post("/songs", fd, {
@@ -83,6 +85,16 @@ export default function AdminSongs({ artists, albums }) {
     }
   }
 
+  async function toggleDownloads(song) {
+    try {
+      await api.patch(`/songs/${song.id}`, { downloadable: song.downloadable === false });
+      toast.success(song.downloadable === false ? "Downloads turned on" : "Downloads turned off");
+      list.reload();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  }
+
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,24rem)_1fr]">
       <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-lg bg-surface-raised p-4" noValidate>
@@ -103,6 +115,19 @@ export default function AdminSongs({ artists, albums }) {
         <FileField id="song-audio" label="Audio file" required accept="audio/*" file={audio} onChange={setAudio} hint="MP3, WAV, OGG, M4A or FLAC, up to 30 MB" />
         {errors.audio && <p className="-mt-3 text-sm text-red-400">{errors.audio}</p>}
         <FileField id="song-cover" label="Cover (optional)" accept="image/jpeg,image/png,image/webp" file={cover} onChange={setCover} image hint="Falls back to the album cover if empty" />
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            checked={allowDownload}
+            onChange={(e) => setAllowDownload(e.target.checked)}
+            className="mt-1 h-4 w-4 accent-[#1db954]"
+          />
+          <span>
+            Allow users to download this song
+            <span className="block text-xs text-muted">Only enable this for music you have the right to share.</span>
+          </span>
+        </label>
 
         {saving && (
           <div>
@@ -140,6 +165,15 @@ export default function AdminSongs({ artists, albums }) {
               </div>
               {/* Lets the admin verify the upload actually plays */}
               <audio controls preload="none" src={s.audio?.url} className="h-8 w-full max-w-[220px]" />
+              <button
+                onClick={() => toggleDownloads(s)}
+                title="Click to turn downloads on or off for this song"
+                className={`rounded-full px-2.5 py-1 font-sans text-xs font-semibold transition ${
+                  s.downloadable !== false ? "bg-brand/20 text-brand hover:bg-brand/30" : "bg-white/10 text-muted hover:bg-white/20"
+                }`}
+              >
+                {s.downloadable !== false ? "Downloads on" : "Downloads off"}
+              </button>
               <button onClick={() => onDelete(s)} aria-label={`Delete ${s.title}`} className="rounded p-2 text-muted hover:bg-white/10 hover:text-red-400">
                 <Trash2 size={18} />
               </button>

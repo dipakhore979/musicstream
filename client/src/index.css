@@ -132,3 +132,8 @@ button:not(:disabled):active { scale: 0.96; }
 /* Player bar slides up the first time a song starts */
 @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
 .animate-slide-up { animation: slide-up 0.3s var(--ease-out) backwards; }
+
+/* ---- Logo: the sound bars bounce when the logo's parent (.group) is hovered ---- */
+.logo-bar { transform-box: fill-box; transform-origin: center; }
+.group:hover .logo-bar, .logo-mark:hover .logo-bar { animation: logo-bounce 0.7s ease-in-out infinite; }
+@keyframes logo-bounce { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.55); } }

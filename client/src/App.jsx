@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import InfoPage from "./pages/InfoPage.jsx";
+import Downloads from "./pages/Downloads.jsx"; // not lazy: it must open with no internet
 import { useAuthStore } from "./store/authStore.js";
 
 // Everything except the first screens loads on demand, which keeps the initial download small.
@@ -50,6 +51,7 @@ export default function App() {
           <Route path="search" element={<Search />} />
           <Route path="library" element={<Library />} />
           <Route path="liked" element={<LikedSongsPage />} />
+          <Route path="downloads" element={<Downloads />} />
           <Route path="playlists/:id" element={<PlaylistPage />} />
           <Route path="albums/:id" element={<AlbumPage />} />
           <Route path="artists/:id" element={<ArtistPage />} />

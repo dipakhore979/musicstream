@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { Pause, Play } from "lucide-react";
+import { CircleArrowDown, Pause, Play } from "lucide-react";
 import CoverImage from "./CoverImage.jsx";
 import LikeButton from "./LikeButton.jsx";
 import SongMenu from "./SongMenu.jsx";
 import { songGridCols } from "./songGrid.js";
 import { formatDuration, getSongCover } from "../../lib/format.js";
 import { selectCurrentSong, usePlayerStore } from "../../store/playerStore.js";
+import { useOfflineStore } from "../../store/offlineStore.js";
 
 function Equalizer({ paused }) {
   return (
@@ -23,6 +24,7 @@ export default function SongRow({ song, index, showAlbum = true, onPlay, onRemov
   const isActive = usePlayerStore((s) => s.isPlaying && selectCurrentSong(s)?.id === song.id);
   const togglePlay = usePlayerStore((s) => s.togglePlay);
   const playSongs = usePlayerStore((s) => s.playSongs);
+  const savedOffline = useOfflineStore((s) => s.ids.has(song.id));
 
   const handlePlay = () => {
     if (isCurrent) togglePlay();
@@ -53,11 +55,14 @@ export default function SongRow({ song, index, showAlbum = true, onPlay, onRemov
         <CoverImage src={getSongCover(song)} alt="" className="h-10 w-10 shrink-0" />
         <div className="min-w-0">
           <p className={`truncate font-medium ${isCurrent ? "text-brand" : ""}`}>{song.title}</p>
-          {song.artist && (
-            <Link to={`/artists/${song.artist.id}`} className="truncate text-sm text-muted hover:text-white hover:underline">
-              {song.artist.name}
-            </Link>
-          )}
+          <div className="flex min-w-0 items-center gap-1.5">
+            {savedOffline && <CircleArrowDown size={14} className="shrink-0 text-brand" aria-label="Available offline" />}
+            {song.artist && (
+              <Link to={`/artists/${song.artist.id}`} className="truncate text-sm text-muted hover:text-white hover:underline">
+                {song.artist.name}
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 

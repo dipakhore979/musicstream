@@ -17,6 +17,8 @@ const songSchema = new mongoose.Schema(
     genre: { type: String, default: "", trim: true, maxlength: 50 },
     trackNumber: { type: Number, default: null, min: 1 },
     playCount: { type: Number, default: 0, index: true },
+    // Admin switch for the app's Download buttons. Existing songs have no value, so they default to allowed.
+    downloadable: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

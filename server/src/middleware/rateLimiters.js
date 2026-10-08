@@ -59,3 +59,12 @@ export const otpVerifyLimiter = rateLimit({
   legacyHeaders: false,
   message: json429("Too many attempts. Please try again in a few minutes."),
 });
+
+// An album download asks for one link per song, so this is generous but still bounded.
+export const downloadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: isProd ? 300 : 3000,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: json429("Download limit reached, please try again later."),
+});

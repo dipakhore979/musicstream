@@ -11,6 +11,7 @@ playlists, like songs, and keep listening while you navigate. Installable on pho
   volume, shuffle, repeat, reorderable queue, media keys and lock-screen controls
 - **Playlists and Liked Songs:** create, rename, delete, add/remove songs, 2x2 cover mosaics
 - **Search:** debounced search across songs, artists and albums, top result, recent searches, genre tiles
+- **Downloads, two ways:** *Download in app* saves songs inside MusicStream (a Downloads page that plays with no internet), or *Save to device* saves audio files to the phone or computer. Works for single songs, albums, playlists and Liked Songs. Admins can switch downloads on or off per song, so only music you have the right to share is offered
 - **Admin panel:** upload songs (audio + cover), create albums and artists, delete content (role-based)
 - **Installable app:** manifest, service worker, offline page
 - **Security:** bcrypt hashing, httpOnly cookies, CSRF origin/header checks, Zod validation, helmet,

@@ -3,7 +3,7 @@ import { NAV_ITEMS } from "./navItems.js";
 
 export default function MobileNav() {
   return (
-    <nav className="grid grid-cols-3 border-t border-white/10 bg-black pb-[env(safe-area-inset-bottom)] md:hidden">
+    <nav className="grid grid-cols-4 border-t border-white/10 bg-black pb-[env(safe-area-inset-bottom)] md:hidden">
       {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}

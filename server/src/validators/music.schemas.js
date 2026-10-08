@@ -9,6 +9,9 @@ const nullableObjectId = z.preprocess((v) => (v === "" ? null : v), objectId.nul
 const optionalInt = (min, max) =>
   z.preprocess(emptyToUndefined, z.coerce.number().int().min(min).max(max).optional());
 
+// Checkbox values arrive from multipart forms as the strings "true" / "false".
+const formBoolean = z.preprocess((v) => (v === "true" ? true : v === "false" ? false : v), z.boolean().optional());
+
 const pagination = {
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
@@ -50,6 +53,7 @@ export const createSongSchema = z.object({
   album: optionalObjectId,
   genre: z.string().trim().max(50).optional(),
   trackNumber: optionalInt(1, 999),
+  downloadable: formBoolean,
 });
 export const updateSongSchema = z.object({
   title: z.string().trim().min(1).max(150).optional(),
@@ -57,4 +61,5 @@ export const updateSongSchema = z.object({
   album: nullableObjectId, // "" clears the album
   genre: z.string().trim().max(50).optional(),
   trackNumber: optionalInt(1, 999),
+  downloadable: formBoolean,
 });

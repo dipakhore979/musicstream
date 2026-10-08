@@ -7,6 +7,7 @@ import HeroBackdrop from "../components/ui/HeroBackdrop.jsx";
 import { LikedCover } from "../components/library/ItemCover.jsx";
 import SongList from "../components/music/SongList.jsx";
 import PlayAllButtons from "../components/music/PlayAllButtons.jsx";
+import DownloadAllButton from "../components/music/DownloadAllButton.jsx";
 import { SongListSkeleton } from "../components/music/Skeletons.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import LoadMore from "../components/ui/LoadMore.jsx";
@@ -51,7 +52,9 @@ export default function LikedSongsPage() {
         )}
         {list.items.length > 0 && (
           <>
-            <PlayAllButtons songs={list.items} />
+            <PlayAllButtons songs={list.items}>
+              <DownloadAllButton songs={list.items} />
+            </PlayAllButtons>
             <SongList songs={list.items} showHeader />
             <LoadMore hasMore={list.hasMore} loading={list.loadingMore} onClick={list.loadMore} />
           </>

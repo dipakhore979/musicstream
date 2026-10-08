@@ -17,7 +17,7 @@ export const useLibraryStore = create((set, get) => ({
       set({ likedIds: new Set(likes.data.data), playlists: lists.data.data, loaded: true });
     } catch (err) {
       set({ loaded: true });
-      toast.error(getErrorMessage(err));
+      if (err.response) toast.error(getErrorMessage(err)); // stay quiet when simply offline
     }
   },
 

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { ChevronDown, Download, Headphones, LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
+import { ChevronDown, Download, LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../../store/authStore.js";
 import { useInstallApp } from "../../hooks/useInstallApp.js";
+import { LogoMark, Wordmark } from "../ui/Logo.jsx";
 
 export function Avatar({ user, size = 32 }) {
   const initial = user?.name?.trim()?.[0]?.toUpperCase() || "?";
@@ -55,8 +56,8 @@ export default function TopBar() {
   return (
     <header className="flex h-14 shrink-0 items-stretch justify-between border-b border-brand/30 bg-black">
       <Link to="/" aria-label="MusicStream home" className="group flex items-center gap-2 bg-[#1b1b1b] px-4 text-brand transition-colors hover:bg-[#262626]">
-        <Headphones size={26} className="transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
-        <span className="font-sans text-xl font-extrabold tracking-tight">MusicStream</span>
+        <LogoMark size={30} className="transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" />
+        <Wordmark className="text-xl" />
       </Link>
 
       <div className="flex items-center gap-4 pr-4 md:gap-8 md:pr-8">

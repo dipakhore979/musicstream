@@ -11,6 +11,7 @@ import PlaylistCover from "../components/playlist/PlaylistCover.jsx";
 import EditPlaylistModal from "../components/playlist/EditPlaylistModal.jsx";
 import SongList from "../components/music/SongList.jsx";
 import PlayAllButtons from "../components/music/PlayAllButtons.jsx";
+import DownloadAllButton from "../components/music/DownloadAllButton.jsx";
 import { SongListSkeleton } from "../components/music/Skeletons.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 
@@ -120,6 +121,7 @@ export default function PlaylistPage() {
 
         {playlist && (
           <PlayAllButtons songs={songs}>
+            <DownloadAllButton songs={songs} />
             <button onClick={() => setEditing(true)} aria-label="Edit details" title="Edit details" className={iconBtn}>
               <Pencil size={22} />
             </button>
