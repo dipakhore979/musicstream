@@ -74,13 +74,13 @@ function BrowseGenres() {
               key={g.name}
               onClick={() => setParams({ q: g.name })}
               style={{ backgroundColor: colorFor(g.name) }}
-              className="relative h-28 overflow-hidden rounded-lg p-4 text-left transition hover:scale-[1.02] md:h-32"
+              className="group relative h-28 overflow-hidden rounded-lg p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.9)] md:h-32"
             >
               <span className="block break-words text-xl font-extrabold tracking-tight md:text-2xl">{g.name}</span>
               <span className="absolute bottom-3 left-4 text-xs font-semibold text-white/80">
                 {g.count} song{g.count === 1 ? "" : "s"}
               </span>
-              <span aria-hidden="true" className="absolute -bottom-3 -right-4 h-20 w-20 rotate-[25deg] rounded-md bg-black/20" />
+              <span aria-hidden="true" className="absolute -bottom-3 -right-4 h-20 w-20 rotate-[25deg] rounded-md bg-black/20 transition-transform duration-300 group-hover:rotate-[40deg] group-hover:scale-125" />
             </button>
           ))}
         </div>

@@ -15,8 +15,8 @@ export default function TextField({ label, error, type = "text", id, ...props })
           id={id}
           type={isPassword && show ? "text" : type}
           aria-invalid={Boolean(error)}
-          className={`w-full rounded-md bg-surface-highlight px-3 py-3 text-sm outline-none ring-1 transition focus:ring-2 ${
-            error ? "ring-red-500" : "ring-white/20 focus:ring-white"
+          className={`w-full rounded-md bg-surface-highlight px-3 py-3 text-sm outline-none ring-1 transition-all duration-200 focus:ring-2 ${
+            error ? "ring-red-500" : "ring-white/20 hover:ring-white/50 focus:ring-brand focus:shadow-[0_0_18px_-4px_rgba(29,185,84,0.55)]"
           } ${isPassword ? "pr-11" : ""}`}
           {...props}
         />

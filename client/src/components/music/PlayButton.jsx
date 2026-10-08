@@ -27,7 +27,7 @@ export default function PlayButton({ onClick, size = "md", label = "Play", class
       type="button"
       onClick={handle}
       aria-label={label}
-      className={`flex items-center justify-center rounded-full bg-brand text-black shadow-xl transition hover:scale-105 hover:bg-brand-hover active:scale-100 ${SIZES[size]} ${className}`}
+      className={`flex items-center justify-center rounded-full bg-brand text-black shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-hover hover:shadow-[0_8px_26px_rgba(29,185,84,0.6)] ${SIZES[size]} ${className}`}
     >
       {busy ? <Loader2 size={20} className="animate-spin" /> : <Play size={22} className="ml-0.5 fill-black" />}
     </button>

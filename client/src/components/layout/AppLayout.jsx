@@ -49,7 +49,9 @@ export default function AppLayout() {
           {/* A crash on one page shouldn't take down the sidebar or the music; pages also load lazily. */}
           <ErrorBoundary compact resetKey={pathname}>
             <Suspense fallback={<PageSpinner />}>
-              <Outlet />
+              <div key={pathname} className="animate-fade-up min-h-full">
+                <Outlet />
+              </div>
             </Suspense>
           </ErrorBoundary>
         </main>

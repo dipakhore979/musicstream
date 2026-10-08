@@ -93,7 +93,7 @@ export default function ResetPassword() {
         <button
           type="submit"
           disabled={loading || otp.length !== 6}
-          className="mt-2 flex items-center justify-center gap-2 rounded-full bg-brand py-3 font-bold text-black transition hover:scale-[1.02] hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+          className="btn-primary mt-2 w-full !py-3"
         >
           {loading && <Spinner size={18} />}
           Reset password

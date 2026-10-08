@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ListMusic, Loader2, Pause, Play, SkipForward } from "lucide-react";
+import { ListMusic, Loader2, Pause, Play, SkipForward, X } from "lucide-react";
 import CoverImage from "../music/CoverImage.jsx";
 import LikeButton from "../music/LikeButton.jsx";
 import PlayerControls from "../player/PlayerControls.jsx";
@@ -7,6 +7,16 @@ import SeekBar from "../player/SeekBar.jsx";
 import VolumeControl from "../player/VolumeControl.jsx";
 import { getSongCover } from "../../lib/format.js";
 import { selectCurrentSong, usePlayerStore, useProgressStore } from "../../store/playerStore.js";
+
+// Stops playback, empties the queue and hides the player.
+function CloseButton({ className = "" }) {
+  const reset = usePlayerStore((s) => s.reset);
+  return (
+    <button type="button" onClick={reset} aria-label="Close player" title="Close player" className={`icon-btn ${className}`}>
+      <X size={18} />
+    </button>
+  );
+}
 
 function MiniProgress() {
   const currentTime = useProgressStore((s) => s.currentTime);
@@ -43,6 +53,7 @@ function MiniPlayer({ song }) {
       <button onClick={() => next()} aria-label="Next" className="rounded-full p-2">
         <SkipForward size={22} className="fill-white" />
       </button>
+      <CloseButton />
     </div>
   );
 }
@@ -52,27 +63,24 @@ export default function PlayerBar() {
   const queueOpen = usePlayerStore((s) => s.queueOpen);
   const toggleQueue = usePlayerStore((s) => s.toggleQueue);
 
+  // Nothing queued: no player bar at all. It slides up when you start a song.
+  if (!song) return null;
+
   return (
-    <footer className="shrink-0 border-t border-white/10 bg-black">
+    <footer className="shrink-0 animate-slide-up border-t border-white/10 bg-black">
       {/* Desktop / tablet */}
       <div className="hidden h-20 grid-cols-[1fr_minmax(0,40rem)_1fr] items-center gap-4 px-4 md:grid">
         <div className="flex min-w-0 items-center gap-3">
-          <CoverImage src={song ? getSongCover(song) : ""} className="h-14 w-14 shrink-0" />
-          {song ? (
-            <>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">{song.title}</p>
-                {song.artist && (
-                  <Link to={`/artists/${song.artist.id}`} className="truncate text-xs text-muted hover:text-white hover:underline">
-                    {song.artist.name}
-                  </Link>
-                )}
-              </div>
-              <LikeButton song={song} />
-            </>
-          ) : (
-            <span className="text-sm text-muted">Nothing playing</span>
-          )}
+          <CoverImage src={getSongCover(song)} className="h-14 w-14 shrink-0" />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold">{song.title}</p>
+            {song.artist && (
+              <Link to={`/artists/${song.artist.id}`} className="truncate text-xs text-muted hover:text-white hover:underline">
+                {song.artist.name}
+              </Link>
+            )}
+          </div>
+          <LikeButton song={song} />
         </div>
 
         <div className="flex flex-col items-center gap-1">
@@ -85,16 +93,17 @@ export default function PlayerBar() {
             onClick={toggleQueue}
             aria-label="Queue"
             aria-pressed={queueOpen}
-            className={`rounded-full p-2 transition ${queueOpen ? "text-brand" : "text-muted hover:text-white"}`}
+            className={`rounded-full p-2 transition-all duration-200 hover:scale-110 hover:bg-white/10 ${queueOpen ? "text-brand" : "text-muted hover:text-white"}`}
           >
             <ListMusic size={20} />
           </button>
           <VolumeControl />
+          <CloseButton className="ml-1" />
         </div>
       </div>
 
-      {/* Phones: mini player (tap to expand), hidden until something is queued */}
-      {song && <MiniPlayer song={song} />}
+      {/* Phones: mini player (tap to expand) */}
+      <MiniPlayer song={song} />
     </footer>
   );
 }

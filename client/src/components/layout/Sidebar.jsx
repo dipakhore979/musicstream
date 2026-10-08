@@ -8,16 +8,22 @@ import { useLibraryStore } from "../../store/libraryStore.js";
 import { useCreatePlaylist } from "../../hooks/useCreatePlaylist.js";
 import { useInstallApp } from "../../hooks/useInstallApp.js";
 
+// Both link styles share one hover language: a green bar grows on the left, the row slides right a
+// little, and the icon turns green and grows.
+const iconHover = "[&>svg]:transition-all [&>svg]:duration-200 hover:[&>svg]:scale-110 hover:[&>svg]:text-brand";
+const bar =
+  "before:absolute before:left-0 before:top-1/2 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-brand before:transition-all before:duration-200 hover:before:h-5";
+
 // Main links (serif, bold)
 const primaryClass = ({ isActive }) =>
-  `flex items-center gap-4 rounded-sm px-3 py-2.5 text-sm font-bold transition-colors hover:text-white ${
-    isActive ? "text-white" : "text-white/80"
+  `relative flex items-center gap-4 rounded-sm px-3 py-2.5 text-sm font-bold transition-all duration-200 hover:translate-x-1 hover:text-white ${bar} ${iconHover} ${
+    isActive ? "text-white before:h-5 [&>svg]:text-brand" : "text-white/80 before:h-0"
   }`;
 
 // Secondary list (sans-serif, small, highlighted on hover)
 const rowClass = ({ isActive }) =>
-  `flex w-full items-center gap-4 rounded-sm px-3 py-3 text-left transition-colors hover:bg-[#1c1c1c] hover:text-white ${
-    isActive ? "bg-[#1c1c1c] text-white" : "text-muted"
+  `relative flex w-full items-center gap-4 rounded-sm px-3 py-3 text-left transition-all duration-200 hover:translate-x-0.5 hover:bg-[#1c1c1c] hover:text-white ${bar} ${iconHover} ${
+    isActive ? "bg-[#1c1c1c] text-white before:h-5 [&>svg]:text-brand" : "text-muted before:h-0"
   }`;
 
 export default function Sidebar() {
@@ -45,7 +51,7 @@ export default function Sidebar() {
       <div className="mx-2 border-t border-white/20" />
 
       <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-3 font-sans text-xs">
-        <button onClick={createPlaylist} className={rowClass({ isActive: false })}>
+        <button onClick={createPlaylist} className={`${rowClass({ isActive: false })} hover:[&>svg]:rotate-90`}>
           <SquarePlus size={18} /> Create Playlist
         </button>
         <NavLink to="/liked" className={rowClass}>
@@ -82,7 +88,7 @@ export default function Sidebar() {
           <div className="p-5">
             <button
               onClick={install}
-              className="rounded-full border border-white/30 px-5 py-2 font-sans text-xs text-white transition hover:border-white hover:bg-white/10"
+              className="btn-outline !px-5 font-sans !text-xs"
             >
               Install App
             </button>

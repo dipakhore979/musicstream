@@ -31,7 +31,11 @@ export default function SongRow({ song, index, showAlbum = true, onPlay, onRemov
   };
 
   return (
-    <div className={`group grid ${songGridCols(showAlbum)} items-center gap-3 rounded-md px-2 py-2 hover:bg-white/10`}>
+    <div
+      className={`group relative grid ${songGridCols(showAlbum)} items-center gap-3 rounded-md px-2 py-2 transition-colors duration-150 before:absolute before:bottom-2 before:left-0 before:top-2 before:w-0.5 before:rounded-full before:bg-brand before:transition-opacity hover:bg-gradient-to-r hover:from-white/10 hover:to-transparent hover:before:opacity-100 ${
+        isCurrent ? "before:opacity-100" : "before:opacity-0"
+      }`}
+    >
       <button
         onClick={handlePlay}
         aria-label={isActive ? `Pause ${song.title}` : `Play ${song.title}`}

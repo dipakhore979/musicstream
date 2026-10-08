@@ -6,7 +6,7 @@ import { getErrorMessage } from "../../lib/api.js";
 import { usePlayerStore } from "../../store/playerStore.js";
 import { useLibraryStore } from "../../store/libraryStore.js";
 
-const item = "flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10";
+const item = "menu-item flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10";
 
 // The "…" menu on every song row. Pass onRemoveFromPlaylist when the row is inside a playlist.
 export default function SongMenu({ song, onRemoveFromPlaylist }) {
@@ -83,7 +83,7 @@ export default function SongMenu({ song, onRemoveFromPlaylist }) {
         aria-label={`More options for ${song.title}`}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="rounded-full p-1.5 text-muted hover:text-white md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100"
+        className="rounded-full p-1.5 text-muted transition-all duration-200 hover:scale-110 hover:bg-white/10 hover:text-white md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100"
       >
         <MoreHorizontal size={18} />
       </button>

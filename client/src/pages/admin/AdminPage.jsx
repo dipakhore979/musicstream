@@ -28,7 +28,7 @@ export default function AdminPage() {
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
               tab === t.id ? "bg-white text-black" : "bg-surface-highlight hover:bg-white/20"
             }`}
           >

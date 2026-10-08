@@ -10,9 +10,9 @@ function IconButton({ label, active, onClick, disabled, children }) {
       aria-label={label}
       aria-pressed={active}
       title={label}
-      className={`relative rounded-full p-2 transition ${
+      className={`relative rounded-full p-2 transition-all duration-200 hover:scale-110 hover:bg-white/10 ${
         active ? "text-brand" : "text-muted hover:text-white"
-      } disabled:opacity-40 disabled:hover:text-muted`}
+      } disabled:opacity-40 disabled:hover:scale-100 disabled:hover:bg-transparent disabled:hover:text-muted`}
     >
       {children}
       {active && <span className="absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-brand" />}
@@ -49,7 +49,7 @@ export default function PlayerControls({ big = false }) {
         onClick={togglePlay}
         disabled={!hasSong}
         aria-label={isPlaying ? "Pause" : "Play"}
-        className={`flex items-center justify-center rounded-full bg-white text-black transition hover:scale-105 disabled:opacity-40 disabled:hover:scale-100 ${
+        className={`flex items-center justify-center rounded-full bg-white text-black transition-all duration-200 hover:scale-110 hover:shadow-[0_0_24px_rgba(255,255,255,0.45)] disabled:opacity-40 disabled:hover:scale-100 disabled:hover:shadow-none ${
           big ? "h-16 w-16" : "h-9 w-9"
         }`}
       >

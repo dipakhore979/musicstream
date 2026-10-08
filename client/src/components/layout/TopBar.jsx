@@ -54,8 +54,8 @@ export default function TopBar() {
 
   return (
     <header className="flex h-14 shrink-0 items-stretch justify-between border-b border-brand/30 bg-black">
-      <Link to="/" aria-label="MusicStream home" className="flex items-center gap-2 bg-[#1b1b1b] px-4 text-brand">
-        <Headphones size={26} />
+      <Link to="/" aria-label="MusicStream home" className="group flex items-center gap-2 bg-[#1b1b1b] px-4 text-brand transition-colors hover:bg-[#262626]">
+        <Headphones size={26} className="transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
         <span className="font-sans text-xl font-extrabold tracking-tight">MusicStream</span>
       </Link>
 
@@ -66,7 +66,7 @@ export default function TopBar() {
               key={l.to}
               to={l.to}
               className={({ isActive }) =>
-                `text-base transition-colors hover:text-white ${isActive ? "text-white underline underline-offset-8" : "text-white/80"}`
+                `relative text-base transition-colors hover:text-white after:absolute after:-bottom-1 after:left-1/2 after:h-0.5 after:w-0 after:-translate-x-1/2 after:rounded-full after:bg-brand after:transition-all after:duration-300 hover:after:w-full ${isActive ? "text-white after:w-full" : "text-white/80"}`
               }
             >
               {l.label}
@@ -80,7 +80,7 @@ export default function TopBar() {
             aria-haspopup="menu"
             aria-expanded={open}
             aria-label="Account menu"
-            className="flex max-w-[10rem] items-center gap-1 rounded-full bg-[#f1ead9] px-4 py-1 text-sm text-black transition hover:bg-white"
+            className="flex max-w-[10rem] items-center gap-1 rounded-full bg-[#f1ead9] px-4 py-1 text-sm text-black transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(255,255,255,0.6)]"
           >
             <Avatar user={user} size={22} />
             <span className="truncate">{user?.name?.split(" ")[0] ?? "Account"}</span>
@@ -105,7 +105,7 @@ export default function TopBar() {
                 to="/profile"
                 role="menuitem"
                 onClick={() => setOpen(false)}
-                className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10"
+                className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10 menu-item"
               >
                 <UserIcon size={16} /> Profile
               </Link>
@@ -114,7 +114,7 @@ export default function TopBar() {
                   to="/admin"
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10"
+                  className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10 menu-item"
                 >
                   <ShieldCheck size={16} /> Admin panel
                 </Link>
@@ -126,7 +126,7 @@ export default function TopBar() {
                     setOpen(false);
                     install();
                   }}
-                  className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10"
+                  className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10 menu-item"
                 >
                   <Download size={16} /> Install app
                 </button>
@@ -134,7 +134,7 @@ export default function TopBar() {
               <button
                 role="menuitem"
                 onClick={handleLogout}
-                className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10"
+                className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-white/10 menu-item"
               >
                 <LogOut size={16} /> Log out
               </button>

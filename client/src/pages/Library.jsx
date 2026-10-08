@@ -34,7 +34,7 @@ export default function Library() {
             key={c.id}
             onClick={() => setFilter(c.id)}
             aria-pressed={filter === c.id}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
               filter === c.id ? "bg-white text-black" : "bg-white/10 hover:bg-white/20"
             }`}
           >

@@ -64,7 +64,7 @@ export default function OtpInput({ value, onChange, length = 6, disabled = false
           onFocus={(e) => e.target.select()}
           aria-label={`Digit ${i + 1} of ${length}`}
           className={`h-14 w-11 rounded-md bg-surface-highlight text-center font-sans text-2xl font-bold outline-none ring-1 transition focus:ring-2 sm:w-12 ${
-            hasError ? "ring-red-500" : "ring-white/20 focus:ring-white"
+            hasError ? "ring-red-500" : "ring-white/20 hover:ring-white/50 focus:ring-brand focus:shadow-[0_0_18px_-4px_rgba(29,185,84,0.55)]"
           } disabled:opacity-60`}
         />
       ))}

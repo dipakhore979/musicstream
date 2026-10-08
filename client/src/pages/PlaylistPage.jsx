@@ -81,7 +81,7 @@ export default function PlaylistPage() {
     }
   }
 
-  const iconBtn = "rounded-full p-2 text-muted transition hover:text-white";
+  const iconBtn = "icon-btn";
 
   return (
     <div className="relative min-h-full">

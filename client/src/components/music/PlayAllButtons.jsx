@@ -16,14 +16,14 @@ export default function PlayAllButtons({ songs, children }) {
           <button
             onClick={() => playSongs(songs, 0)}
             aria-label="Play all"
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-black transition hover:scale-105 hover:bg-brand-hover"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-black transition-all duration-200 hover:scale-110 hover:bg-brand-hover hover:shadow-[0_10px_30px_rgba(29,185,84,0.55)]"
           >
             <Play size={26} className="ml-0.5 fill-black" />
           </button>
           <button
             onClick={() => playShuffled(songs)}
             aria-label="Shuffle play"
-            className="rounded-full p-2 text-muted transition hover:text-white"
+            className="icon-btn"
           >
             <Shuffle size={28} />
           </button>

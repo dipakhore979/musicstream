@@ -16,7 +16,7 @@ export default function VolumeControl() {
         type="button"
         onClick={toggleMute}
         aria-label={muted ? "Unmute" : "Mute"}
-        className="rounded-full p-2 text-muted hover:text-white"
+        className="icon-btn"
       >
         <Icon size={20} />
       </button>

@@ -69,7 +69,7 @@ export default function SearchInput({ className = "", id, compact = false }) {
         enterKeyHint="search"
         autoComplete="off"
         maxLength={100}
-        className={`w-full rounded-full bg-[#242424] outline-none ring-1 ring-transparent transition placeholder:text-muted hover:ring-white/30 focus:ring-2 focus:ring-white ${size}`}
+        className={`w-full rounded-full bg-[#242424] outline-none ring-1 ring-transparent transition-all duration-200 placeholder:text-muted hover:ring-white/30 focus:ring-2 focus:ring-brand focus:shadow-[0_0_18px_-4px_rgba(29,185,84,0.55)] ${size}`}
       />
       {text && (
         <button

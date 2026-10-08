@@ -10,9 +10,9 @@ export default function MediaCard({ to, image, title, subtitle, fluid = false, o
   const width = fluid ? "w-full" : "w-40 shrink-0 md:w-44";
 
   return (
-    <div className={`group relative ${width}`}>
+    <div className={`group relative transition-transform duration-300 hover:-translate-y-1 ${width}`}>
       <div className="relative">
-        <Link to={to} tabIndex={-1} aria-hidden="true" className="block overflow-hidden rounded-sm">
+        <Link to={to} tabIndex={-1} aria-hidden="true" className="block overflow-hidden rounded-sm transition-shadow duration-300 group-hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.95)]">
           {cover ? (
             <div className="aspect-[4/3] w-full">{cover}</div>
           ) : (
@@ -32,7 +32,7 @@ export default function MediaCard({ to, image, title, subtitle, fluid = false, o
           />
         )}
       </div>
-      <Link to={to} className="mt-2 block truncate text-sm font-semibold text-white/90 hover:underline">
+      <Link to={to} className="mt-2 block truncate text-sm font-semibold text-white/90 transition-colors group-hover:text-white hover:underline">
         {title}
       </Link>
       {subtitle && <p className="mt-2 line-clamp-2 text-center text-sm text-muted">{subtitle}</p>}
