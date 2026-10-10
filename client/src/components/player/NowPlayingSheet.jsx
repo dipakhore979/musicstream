@@ -6,6 +6,7 @@ import LikeButton from "../music/LikeButton.jsx";
 import PlayerControls from "./PlayerControls.jsx";
 import SeekBar from "./SeekBar.jsx";
 import { getSongCover } from "../../lib/format.js";
+import { useDominantColor } from "../../hooks/useDominantColor.js";
 import { selectCurrentSong, usePlayerStore } from "../../store/playerStore.js";
 
 // Full-screen player for phones; opened by tapping the mini player.
@@ -13,6 +14,7 @@ export default function NowPlayingSheet() {
   const open = usePlayerStore((s) => s.sheetOpen);
   const song = usePlayerStore(selectCurrentSong);
   const { setSheetOpen, setQueueOpen } = usePlayerStore.getState();
+  const color = useDominantColor(song ? getSongCover(song) : "");
 
   useEffect(() => {
     if (!open) return;
@@ -24,7 +26,7 @@ export default function NowPlayingSheet() {
   if (!open || !song) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-gradient-to-b from-surface-highlight to-black px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] md:hidden">
+    <div className="fixed inset-0 z-40 flex flex-col bg-black px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] md:hidden" style={{ background: `linear-gradient(to bottom, ${color}, #000 75%)` }}>
       <div className="flex items-center justify-between">
         <button onClick={() => setSheetOpen(false)} aria-label="Close player" className="rounded-full p-2">
           <ChevronDown size={28} />

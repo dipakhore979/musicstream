@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Disc3, Trash2 } from "lucide-react";
+import { Disc3, Pencil, Trash2 } from "lucide-react";
 import { api, getErrorMessage, getFieldErrors } from "../../lib/api.js";
 import { usePaginatedList } from "../../hooks/usePaginatedList.js";
 import TextField from "../../components/ui/TextField.jsx";
@@ -11,11 +11,13 @@ import LoadMore from "../../components/ui/LoadMore.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import CoverImage from "../../components/music/CoverImage.jsx";
+import { EditAlbumModal } from "./EditModals.jsx";
 
 const EMPTY = { title: "", artist: "", releaseYear: "", description: "" };
 
 export default function AdminAlbums({ artists, reload: reloadOptions }) {
   const list = usePaginatedList("/albums", {}, { limit: 10 });
+  const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [cover, setCover] = useState(null);
   const [errors, setErrors] = useState({});
@@ -98,6 +100,9 @@ export default function AdminAlbums({ artists, reload: reloadOptions }) {
                 <p className="truncate font-medium">{a.title}</p>
                 <p className="truncate text-sm text-muted">{[a.releaseYear, a.artist?.name].filter(Boolean).join(" • ")}</p>
               </div>
+              <button onClick={() => setEditing(a)} aria-label={`Edit ${a.title}`} title="Edit" className="rounded p-2 text-muted hover:bg-white/10 hover:text-white">
+                <Pencil size={18} />
+              </button>
               <button onClick={() => onDelete(a)} aria-label={`Delete ${a.title}`} className="rounded p-2 text-muted hover:bg-white/10 hover:text-red-400">
                 <Trash2 size={18} />
               </button>
@@ -106,6 +111,18 @@ export default function AdminAlbums({ artists, reload: reloadOptions }) {
         </ul>
         <LoadMore hasMore={list.hasMore} loading={list.loadingMore} onClick={list.loadMore} />
       </div>
+
+      {editing && (
+        <EditAlbumModal
+          album={editing}
+          artists={artists}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            list.reload();
+            reloadOptions();
+          }}
+        />
+      )}
     </div>
   );
 }

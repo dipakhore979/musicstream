@@ -21,3 +21,13 @@ export function formatBytes(bytes = 0) {
   if (bytes < 1024 ** 3) return `${(bytes / 1024 / 1024).toFixed(bytes < 100 * 1024 * 1024 ? 1 : 0)} MB`;
   return `${(bytes / 1024 ** 3).toFixed(1)} GB`;
 }
+
+// Turns "rgb(r, g, b)" or "#rrggbb" into rgba(...) with the given opacity.
+export function toRgba(color, alpha = 1) {
+  if (color.startsWith("#")) {
+    const hex = color.slice(1);
+    const n = parseInt(hex.length === 3 ? hex.replace(/./g, "$&$&") : hex, 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+  }
+  return color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`);
+}

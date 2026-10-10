@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Music2, Trash2 } from "lucide-react";
+import { Music2, Pencil, Trash2 } from "lucide-react";
 import { api, getErrorMessage, getFieldErrors } from "../../lib/api.js";
 import { usePaginatedList } from "../../hooks/usePaginatedList.js";
 import { formatDuration, getSongCover } from "../../lib/format.js";
@@ -11,11 +11,13 @@ import LoadMore from "../../components/ui/LoadMore.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import CoverImage from "../../components/music/CoverImage.jsx";
+import { EditSongModal } from "./EditModals.jsx";
 
 const EMPTY = { title: "", artist: "", album: "", genre: "", trackNumber: "" };
 
-export default function AdminSongs({ artists, albums }) {
+export default function AdminSongs({ artists, albums, reload: reloadOptions }) {
   const list = usePaginatedList("/songs", { sort: "newest" }, { limit: 10 });
+  const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [audio, setAudio] = useState(null);
   const [cover, setCover] = useState(null);
@@ -174,6 +176,9 @@ export default function AdminSongs({ artists, albums }) {
               >
                 {s.downloadable !== false ? "Downloads on" : "Downloads off"}
               </button>
+              <button onClick={() => setEditing(s)} aria-label={`Edit ${s.title}`} title="Edit" className="rounded p-2 text-muted hover:bg-white/10 hover:text-white">
+                <Pencil size={18} />
+              </button>
               <button onClick={() => onDelete(s)} aria-label={`Delete ${s.title}`} className="rounded p-2 text-muted hover:bg-white/10 hover:text-red-400">
                 <Trash2 size={18} />
               </button>
@@ -182,6 +187,19 @@ export default function AdminSongs({ artists, albums }) {
         </ul>
         <LoadMore hasMore={list.hasMore} loading={list.loadingMore} onClick={list.loadMore} />
       </div>
+
+      {editing && (
+        <EditSongModal
+          song={editing}
+          artists={artists}
+          albums={albums}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            list.reload();
+            reloadOptions();
+          }}
+        />
+      )}
     </div>
   );
 }

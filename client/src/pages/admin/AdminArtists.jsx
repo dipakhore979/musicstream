@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Trash2, User } from "lucide-react";
+import { Pencil, Trash2, User } from "lucide-react";
 import { api, getErrorMessage, getFieldErrors } from "../../lib/api.js";
 import { usePaginatedList } from "../../hooks/usePaginatedList.js";
 import TextField from "../../components/ui/TextField.jsx";
@@ -10,11 +10,13 @@ import LoadMore from "../../components/ui/LoadMore.jsx";
 import Spinner from "../../components/ui/Spinner.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import CoverImage from "../../components/music/CoverImage.jsx";
+import { EditArtistModal } from "./EditModals.jsx";
 
 const EMPTY = { name: "", bio: "" };
 
 export default function AdminArtists({ reload: reloadOptions }) {
   const list = usePaginatedList("/artists", {}, { limit: 10 });
+  const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -82,6 +84,9 @@ export default function AdminArtists({ reload: reloadOptions }) {
             <li key={a.id} className="flex items-center gap-3 rounded-md bg-surface-raised p-2">
               <CoverImage src={a.image?.url} rounded icon={User} className="h-12 w-12 shrink-0" />
               <span className="min-w-0 flex-1 truncate font-medium">{a.name}</span>
+              <button onClick={() => setEditing(a)} aria-label={`Edit ${a.name}`} title="Edit" className="rounded p-2 text-muted hover:bg-white/10 hover:text-white">
+                <Pencil size={18} />
+              </button>
               <button onClick={() => onDelete(a)} aria-label={`Delete ${a.name}`} className="rounded p-2 text-muted hover:bg-white/10 hover:text-red-400">
                 <Trash2 size={18} />
               </button>
@@ -90,6 +95,17 @@ export default function AdminArtists({ reload: reloadOptions }) {
         </ul>
         <LoadMore hasMore={list.hasMore} loading={list.loadingMore} onClick={list.loadMore} />
       </div>
+
+      {editing && (
+        <EditArtistModal
+          artist={editing}
+          onClose={() => setEditing(null)}
+          onSaved={() => {
+            list.reload();
+            reloadOptions();
+          }}
+        />
+      )}
     </div>
   );
 }

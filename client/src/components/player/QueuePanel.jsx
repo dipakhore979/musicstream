@@ -35,7 +35,7 @@ export default function QueuePanel() {
   return (
     <aside
       aria-label="Play queue"
-      className="fixed inset-0 z-50 flex flex-col bg-surface-raised md:inset-auto md:bottom-[5.5rem] md:right-3 md:top-16 md:z-40 md:w-96 md:rounded-lg md:shadow-2xl md:ring-1 md:ring-white/10"
+      className="fixed inset-0 z-50 flex flex-col bg-surface-raised md:inset-auto md:bottom-[6.5rem] md:right-3 md:top-16 md:z-40 md:w-96 md:rounded-lg md:shadow-2xl md:ring-1 md:ring-white/10"
     >
       <header className="flex items-center justify-between p-4">
         <h2 className="text-lg font-bold">Queue</h2>

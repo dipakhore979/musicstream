@@ -137,3 +137,12 @@ button:not(:disabled):active { scale: 0.96; }
 .logo-bar { transform-box: fill-box; transform-origin: center; }
 .group:hover .logo-bar, .logo-mark:hover .logo-bar { animation: logo-bounce 0.7s ease-in-out infinite; }
 @keyframes logo-bounce { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.55); } }
+
+/* Play button gently pulses while music is playing */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+.pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+.pulse-ring:hover { animation: none; }
