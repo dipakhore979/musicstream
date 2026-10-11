@@ -1,6 +1,15 @@
 {
   "name": "musicstream-server",
   "version": "1.0.0",
+  "description": "MusicStream API: Express, Mongoose, JWT cookie auth, Cloudinary",
+  "author": "Dipak Hore",
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "mongoose",
+    "jwt",
+    "cloudinary"
+  ],
   "private": true,
   "type": "module",
   "main": "src/server.js",
@@ -10,7 +19,9 @@
     "make-admin": "node scripts/makeAdmin.js",
     "seed": "node scripts/seed.js"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",

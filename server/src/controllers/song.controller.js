@@ -123,7 +123,7 @@ export const deleteSong = asyncHandler(async (req, res) => {
   sendSuccess(res, { message: "Song deleted" });
 });
 
-// Called by the player (Phase 4) when a track starts playing.
+// Called by the audio engine when a track starts playing; bumps the play counter.
 export const registerPlay = asyncHandler(async (req, res) => {
   const song = await Song.findByIdAndUpdate(req.params.id, { $inc: { playCount: 1 } });
   if (!song) throw ApiError.notFound("Song not found");

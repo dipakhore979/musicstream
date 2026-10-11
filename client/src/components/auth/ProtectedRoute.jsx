@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore.js";
 import { FullScreenSpinner } from "../ui/Spinner.jsx";
 
-// Wrap routes that need a session. Pass roles={["admin"]} to also require a role (used in Phase 3).
+// Wrap routes that need a session. Pass roles={["admin"]} to also require a role (used for the admin panel).
 export default function ProtectedRoute({ roles }) {
   const user = useAuthStore((s) => s.user);
   const initialized = useAuthStore((s) => s.initialized);

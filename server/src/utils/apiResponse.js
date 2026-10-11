@@ -7,7 +7,7 @@ export function sendSuccess(res, { data = null, message, statusCode = 200, meta 
   return res.status(statusCode).json(body);
 }
 
-// Shared pagination helpers for list endpoints (used from Phase 3).
+// Shared pagination helpers for the list endpoints (songs, albums, artists, playlists, likes).
 export function getPagination(query, { defaultLimit = 20, maxLimit = 100 } = {}) {
   const page = Math.max(parseInt(query.page, 10) || 1, 1);
   const limit = Math.min(Math.max(parseInt(query.limit, 10) || defaultLimit, 1), maxLimit);

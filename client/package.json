@@ -2,6 +2,16 @@
   "name": "musicstream-client",
   "private": true,
   "version": "1.0.0",
+  "description": "MusicStream web client: React, Vite, Tailwind CSS, Zustand",
+  "author": "Dipak Hore",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "zustand",
+    "pwa"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

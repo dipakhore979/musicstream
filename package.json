@@ -1,5 +1,17 @@
 {
   "name": "musicstream",
+  "description": "MusicStream: a full-stack music streaming web app (MERN)",
+  "author": "Dipak Hore",
+  "license": "MIT",
+  "keywords": [
+    "music",
+    "streaming",
+    "mern",
+    "react",
+    "express",
+    "mongodb",
+    "pwa"
+  ],
   "private": true,
   "scripts": {
     "install:all": "npm install --prefix server && npm install --prefix client",
